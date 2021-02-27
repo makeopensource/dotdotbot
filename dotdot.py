@@ -21,7 +21,8 @@ async def on_message(message):
 
     if message.content[:6] == ":print":
         tempy = message.content[6:]
-        subprocess.run(["echo", tempy, ">>", "/home/adam/ProgrammyStuff/dotdotbot/hehe"])
+        with open("/dev/usb/lp0","w") as outFile:
+            subprocess.run(["echo", tempy],stdout=outFile)
         await message.channel.send("printing this on nick's printer")
 
 client.run(TOKEN)

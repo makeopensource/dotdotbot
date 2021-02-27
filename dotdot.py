@@ -28,7 +28,7 @@ async def on_message(message):
         tempy = message.content[6:]
         if tempy[0] == ' ':
             tempy = tempy[1:]
-        tempy = message.author.nick + 'said: ' + tempy 
+        tempy = message.author.nick + ' said: ' + tempy 
         chunked = chunks(tempy, 85)
         with open("/dev/usb/lp0","w") as outFile:
             for line in chunked:

@@ -26,6 +26,9 @@ async def on_message(message):
     
     if message.content[:6] == ":print":
         tempy = message.content[6:]
+        if tempy[0] == ' ':
+            tempy.pop(0)
+        tempy = message.author.nick + ' ' + tempy 
         chunked = chunks(tempy, 85)
         with open("/dev/usb/lp0","w") as outFile:
             for line in chunked:

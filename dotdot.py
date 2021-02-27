@@ -8,6 +8,11 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 client = discord.Client()
+"""function chunks from ned batchelder on stackoverflow"""
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
 @client.event
 async def on_ready():
@@ -18,11 +23,13 @@ async def on_message(message):
 
     if message.author.bot:
         return
-
+    
     if message.content[:6] == ":print":
         tempy = message.content[6:]
+        chunked = chunks(tempy, 85)
         with open("/dev/usb/lp0","w") as outFile:
-            subprocess.run(["echo", tempy],stdout=outFile)
-        await message.channel.send("printing this on nick's printer")
+            for line in chunked:
+                subprocess.run(["echo", line],stdout=outFile)
+        await message.channel.send("printing...")
 
 client.run(TOKEN)

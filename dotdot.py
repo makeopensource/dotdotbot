@@ -7,6 +7,7 @@ from texttofont import word_to_ascii
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+PRINTER = os.getenv('PRINTER_PATH')
 
 client = discord.Client()
 """function chunks from ned batchelder on stackoverflow"""
@@ -35,7 +36,7 @@ async def on_message(message):
         tempy = word_to_ascii(tempy)
         tempy = message.author.nick + ':\n' + tempy
         chunked = chunks(tempy, 85)
-        with open("/dev/usb/lp0", "w") as outFile:
+        with open(PRINTER, "w") as outFile:
             for line in chunked:
                 subprocess.run(["echo", line], stdout=outFile)
         await message.channel.send("printing atof...")
@@ -46,7 +47,7 @@ async def on_message(message):
             tempy = tempy[1:]
         tempy = message.author.nick + ' said: ' + tempy
         chunked = chunks(tempy, 85)
-        with open("/dev/usb/lp0", "w") as outFile:
+        with open(PRINTER, "w") as outFile:
             for line in chunked:
                 subprocess.run(["echo", line], stdout=outFile)
         await message.channel.send("printing...")

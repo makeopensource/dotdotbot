@@ -1,4 +1,3 @@
-import generate_ascii_template
 from PIL import ImageFont
 
 

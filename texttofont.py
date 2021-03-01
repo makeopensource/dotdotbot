@@ -2,12 +2,13 @@ from PIL import ImageFont
 
 
 class AsciiSentence:
-    def __init__(self, sentence, kerning):
+    def __init__(self, sentence, font, kerning):
         self.sentence = sentence
         self.kerning = kerning
+        self.font = font
 
     def word_to_ascii(self):
-        font = ImageFont.truetype('Deftone-Stylus/DEFTONE.ttf', 12)
+        font = ImageFont.truetype(self.font, 12)
         height = font.getsize('a')[1]
 
         retval = []
@@ -29,16 +30,12 @@ class AsciiSentence:
                     if pixel < 100:
                         line += ' '
                     else:
-                        line += '1'
+                        line += str(letter)
                 line += ' ' * self.kerning
             retval.append(line.strip())
         return retval
 
-#
-#
-# def letter_to_ascii(letter):
-#     retval = ""
-#     with open(f'characters/{letter}.txt', 'r') as f:
-#         for line in f:
-#             retval += line.replace('0', ' ').replace('1', letter)
-#     return retval
+
+s = AsciiSentence('hello!', 'Silkscreen/slkscr.ttf', 3).word_to_ascii()
+for line in s:
+    print(line)

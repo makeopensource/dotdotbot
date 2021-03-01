@@ -3,7 +3,7 @@ import os
 import subprocess
 import discord
 from dotenv import load_dotenv
-from texttofont import word_to_ascii
+from texttofont import word_to_ascii, AsciiSentence
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -22,6 +22,8 @@ def chunks(lst, n):
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
+    channel = client.fetch_channel('753275801360662640')
+    channel.send('starting up...')
 
 
 @client.event
@@ -33,6 +35,14 @@ async def on_message(message):
         tempy = message.content[6:]
         if tempy[0] == ' ':
             tempy = tempy[1:]
+
+        signature = message.author.nick + ':'
+        chunked = AsciiSentence(tempy, 'Silkscreen/slkscr.ttf', 3).word_to_ascii()
+        if len(chunked[0]) > 85:
+            await message.channel.send("input too large")
+            return
+        with open("/dev/usb/lp0", "w") as outFile:
+            subprocess.run(["echo", signature], stdout=outFile)
         tempy = word_to_ascii(tempy)
         tempy = message.author.nick + ':\n' + tempy
         chunked = chunks(tempy, 85)
@@ -51,5 +61,6 @@ async def on_message(message):
             for line in chunked:
                 subprocess.run(["echo", line], stdout=outFile)
         await message.channel.send("printing...")
+
 
 client.run(TOKEN)

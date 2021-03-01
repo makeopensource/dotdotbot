@@ -34,8 +34,3 @@ class AsciiSentence:
                 line += ' ' * self.kerning
             retval.append(line.strip())
         return retval
-
-
-s = AsciiSentence('hello!', 'Silkscreen/slkscr.ttf', 3).word_to_ascii()
-for line in s:
-    print(line)
